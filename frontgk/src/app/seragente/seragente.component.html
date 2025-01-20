@@ -1,0 +1,442 @@
+<div class="container">
+  <!-- Selección de Persona Natural o Jurídica -->
+   <p>Has iniciado sesión con el usuario : {{ usuario }} </p>
+   <button (click)="logout()">Cerrar Sesion</button>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Validación de tu RUC y Dirección</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form 
+                [formGroup]="serAgenteForm"
+                (ngSubmit)="onSubmit()"
+            >
+            <div class="row">
+                <pre>
+                    {{toJson()}}
+                </pre>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <mat-radio-group formControlName="tipoPersona">
+                        <mat-radio-button value="1">Persona Natural</mat-radio-button>
+                        <mat-radio-button value="2">Persona Jurídica</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Ingrese RUC</mat-label>
+                        <input matInput type="text" formControlName="ruc">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        @if(serAgenteForm.value.tipoPersona == '1'){
+                            <mat-label>Ingrese DNI del Titular del comercio</mat-label>
+                        }@else{
+                            <mat-label>Ingrese DNI del Titular del Representante Legal</mat-label>
+                        }
+                        <input matInput type="text" formControlName="dniTitular">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <button type="button" (click)="simularSunat()" mat-raised-button color="primary" class="submit-button">
+                        Registrar RUC
+                    </button>
+                </div>
+            </div>
+            <div>
+                <p>Información del agente registrado en SUNAT</p>
+                <table border="1" class="full-width">
+                    <tr>
+                        <td>RUC</td>
+                        <td colspan="5">{{consultaSunat.ruc}}</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre o razón social</td>
+                        <td colspan="5">{{consultaSunat.razonSocial}}</td>
+                    </tr>
+                    <tr>
+                        <td>Estado del contribuyente</td>
+                        <td>{{consultaSunat.estadoContribuyente}}</td>
+                        <td>Condición del domicilio</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Tipo Via</td>
+                        <td>{{consultaSunat.tipoVia}}</td>
+                        <td>Nombre vía</td>
+                        <td>{{consultaSunat.nombreVia}}</td>
+                        <td>Número</td>
+                        <td>{{consultaSunat.numero}}</td>
+                    </tr>
+                    <tr>
+                        <td>Interior</td>
+                        <td>{{consultaSunat.interior}}</td>
+                        <td>Lote</td>
+                        <td>{{consultaSunat.lote}}</td>
+                        <td>Departamento</td>
+                        <td>{{consultaSunat.departamento}}</td>
+                    </tr>
+                    <tr>
+                        <td>Manzana</td>
+                        <td>{{consultaSunat.manzana}}</td>
+                        <td>Kilómetro</td>
+                        <td>{{consultaSunat.kilometro}}</td>
+                        <td>Ubigeo</td>
+                        <td>{{consultaSunat.ubigeo}}</td>
+                    </tr>
+                </table>
+                <br>
+                <mat-checkbox (change)="onChangeRellenarDatos($event)" formControlName="rellenarDatos">
+                    La dirección mostrada corresponde a la dirección actual de mi LOCAL COMERCIAL
+                    @if(!!!serAgenteForm.value.rellenarDatos){
+                        (Estos datos no se guardaran en los registros)
+                    }
+                </mat-checkbox>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Tipo de Vía</mat-label>
+                        <mat-select formControlName="tipoVia">
+                            @for(item of parametrosService.vias; track item.valo){
+                                <mat-option [value]="item.valo">{{item.desc}}</mat-option>
+                            }
+                            @empty{
+                                <p>Sin datos</p>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Nombre Vía</mat-label>
+                        <input matInput type="text" formControlName="nombreVia">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Número</mat-label>
+                        <input matInput type="text" formControlName="numero">
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Interior</mat-label>
+                        <input matInput type="text" formControlName="interior">
+                    </mat-form-field>
+                </div> -->
+                <!-- <label for="">
+                    Lote
+                    <input type="text" name="" id="">
+                </label> -->
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Interior</mat-label>
+                        <input matInput type="text" formControlName="interior">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Lote</mat-label>
+                        <input matInput type="text" formControlName="lote">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Manzana</mat-label>
+                        <input matInput type="text" formControlName="manzana">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Kilométro</mat-label>
+                        <input matInput type="text" formControlName="kilometro">
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    <mat-form-field class="full-width">
+                        <mat-label>Departamento</mat-label>
+                        <mat-select formControlName="idDepartamento" (selectionChange)="onChangeDepartment($event)">
+                            @for(item of parametrosService.departamentos; track item.id){
+                                <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+                            }
+                            @empty{
+                                <p>Sin datos</p>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-3">
+                    @if(serAgenteForm.value.idDepartamento){
+                        <mat-form-field class="full-width">
+                            <mat-label>Provincia</mat-label>
+                            <mat-select formControlName="idProvincia" (selectionChange)="onChangeProvince($event)">
+                                @for(item of parametrosService.provincias; track item.id){
+                                    <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+                                }
+                                @empty{
+                                    <p>Sin datos</p>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    @if(serAgenteForm.value.idProvincia){
+                        <mat-form-field>
+                            <mat-label>Distrito</mat-label>
+                            <mat-select formControlName="idDistrito" id="">
+                                @for(item of parametrosService.distritos; track item.id){
+                                    <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+                                }
+                                @empty{
+                                    <p>Sin datos</p>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <!-- <label for="idDistrito">
+                            Distrito -->
+                        <!-- </label> -->
+                    }
+                </div>
+            </div>
+            <!-- RUC y detalles -->
+            <fieldset>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Razón Social</mat-label>
+                            <input matInput formControlName="razonSocial" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Denominación comercial</mat-label>
+                            <input matInput type="text" formControlName="denComercial" />
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Años de experiencia en Mercado</mat-label>
+                            <input matInput type="number" formControlName="aniosXp" />
+                        </mat-form-field>
+                    </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>CIIU</mat-label>
+                            <input matInput formControlName="ciiu" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Años de experiencia en el mdo.</mat-label>
+                            <input matInput type="number" formControlName="aniosXp" />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>Regimen tributario</p>
+                        <mat-radio-group formControlName="tipoRegimen">
+                            <mat-radio-button value="rg">Régimen General</mat-radio-button>
+                            <mat-radio-button value="rus">Régimen Único Simplificado</mat-radio-button>
+                            <mat-radio-button value="rer">Régimen Especial de Renta</mat-radio-button>
+                            <mat-radio-button value="rmt">Régimen Mype Tributario</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Cargo</mat-label>
+                            <input matInput type="text" formControlName="cargo" />
+                        </mat-form-field>
+                    </div>
+                    <div class="col-6">
+                        <mat-form-field>
+                            <mat-label>Poderes Inscritos</mat-label>
+                            <input matInput type="text" formControlName="poderesInscritos" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <div class="row">
+                    <div class="col-12">
+                        <p>De contar con un AFILIADOR ingrese su DNI, de lo contrario dejar este dato en blanco.</p>
+                        <p>Ejecutivo comercial (Afiliador)</p>
+                        <mat-form-field>
+                            <mat-label>DNI del ejecutivo comercial</mat-label>
+                            <input matInput type="text" formControlName="poderesInscritos" />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions">
+                <button mat-raised-button color="primary" type="button" (click)="onSave()">Guardar Información</button>
+                <button mat-raised-button color="accent" type="submit">Enviar Información</button>
+            </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+<!-- <form>
+    <div>
+        <input type="radio" name="tipoPersona" checked />
+        <label for="1">Persona Natural</label>
+        <input type="radio" name="tipoPersona" checked />
+        <label for="2">Persona Juridica</label>
+
+        <label for="">
+            Ingrese RUC
+            <input type="text" name="" id="" appOnlyNumbers >
+        </label>
+        <label for="">
+            Ingrese DNI titular del comercio
+            <input type="text" name="" id="">
+        </label>
+        <button>Registrar ruc</button>
+    </div>
+    <div>
+        <input type="checkbox" id="direccionCoincide" name="direccionCoincide" checked />
+        <label for="direccionCoincide">La dirección mostrada corresponde a la dirección actual de mi LOCAL COMERCIAL</label>
+    </div>
+    <div>
+        <label for="">Dirección del comercio</label>
+    </div>
+    <div>
+        <select name="tipoVia" id="">
+            @for(item of parametrosService.vias; track item.valo){
+                <option [value]="item.valo">{{item.desc}}</option>
+            }
+            @empty{
+                <p>Sin datos</p>
+            }
+        </select>
+        <label for="">
+            Nombre via
+            <input type="text" name="" id="">
+        </label>
+        <label for="">
+            Número
+            <input type="text" name="" id="">
+        </label>
+        <label for="">
+            Interior
+            <input type="text" name="" id="">
+        </label>
+        <label for="">
+            Lote
+            <input type="text" name="" id="">
+        </label>
+    </div>
+    <div>
+        <label for="">
+            Manzana
+            <input type="text" name="" id="">
+        </label>
+        <label for="">
+            Kilómetro
+            <input type="text" name="" id="">
+        </label>
+        <label for="">
+            Departamento
+            <select name="idDepartamento" id="" (change)="onChangeDepartment($event)">
+                @for(item of parametrosService.departamentos; track item.id){
+                    <option [value]="item.id">{{item.nombre}}</option>
+                }
+                @empty{
+                    <p>Sin datos</p>
+                }
+            </select>
+        </label>
+        <label for="">
+            Provincia
+            @if(serAgenteForm.value.idDepartamento){
+                <select formControlName="idProvincia" id="" (change)="onChangeProvince($event)">
+                    @for(item of parametrosService.provincias; track item.id){
+                        <option [value]="item.id">{{item.nombre}}</option>
+                    }
+                    @empty{
+                        <p>Sin datos</p>
+                    }
+                </select>
+            }
+        </label>
+        @if(serAgenteForm.value.idProvincia){
+            <label for="idDistrito">
+                Distrito
+                <select formControlName="idDistrito" id="">
+                    @for(item of parametrosService.distritos; track item.id){
+                        <option [value]="item.id">{{item.nombre}}</option>
+                    }
+                    @empty{
+                        <p>Sin datos</p>
+                    }
+                </select>
+            </label>
+        }
+    </div>
+    <br>
+    <fieldset>
+        <div>
+            <label for="">Razón Social
+                <input type="text" name="" id="">
+            </label>
+            <label for="">Denominación comercial
+                <input type="text" name="" id="">
+            </label>
+        </div>
+        <div>
+            <label for="">CIIU
+                <input type="text" name="" id="">
+            </label>
+            <label for="">Años de experiencia en mdo
+                <input type="number" name="" id="">
+            </label>
+            <br>
+        </div>
+        <div>
+            <input type="radio" name="regimenTributario" checked />
+            <label for="RG">Regimen general (RG)</label>
+            <input type="radio" name="regimenTributario" checked />
+            <label for="RUS">Regimen único simplificado (RUS)</label>
+            <input type="radio" name="regimenTributario" checked />
+            <label for="RER">Regimen único Especial de Renta (RER)</label>
+            <input type="radio" name="regimenTributario" checked />
+            <label for="RMT">Regimen Mype Tributario (RMT)</label>
+            <br>
+        </div>
+        <div>
+            <label for="">Cargo
+                <input type="text" name="" id="">
+            </label>
+            <label for="">Poderes inscritos
+                <input type="text" name="" id="">
+            </label>
+        </div>
+    </fieldset>
+    <br>
+    <fieldset>
+        <div>
+            <p>De contar con un afiliador ingrese su DNI, de lo contrario dejar dato en blanco</p>
+            <p>Ejecutivo comercial afiliador</p>
+            <label for="">
+                DNI del ejecutivo comercial
+                <input type="text" name="" id=" ">
+            </label>
+        </div>
+    </fieldset>
+</form> -->

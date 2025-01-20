@@ -1,0 +1,31 @@
+<p>[Este es un correo de simulacion que debería ser enviado a <span style="font-weight: bold;">{{ afiliado.usernameEmail }}&#64;{{ afiliado.proveedorEmail }}</span></p>
+
+<p>Estimado cliente,
+Gracias por tu interés en formar parte, hemos creado tu Usuario y Password para que puedas iniciar tu afiliación como uno de nuestros agentes.
+Ingresa al siguiente link que te enviamos usando las siguientes credenciales.</p>
+
+<!-- localhost.... -->
+
+<!-- Usuario: ....
+Password: .... -->
+<a [href]="ruta" target="_blank">{{ruta}}</a>
+<p>Usuario: <span style="font-weight: bold;">{{afiliado.usuario}}</span></p>
+<p>Cotnraseña: <span style="font-weight: bold;">{{afiliado.password}}</span></p>
+
+<p>Asimismo, te enviamos la lista de requisitos, los cuales te solicitaremos en los próximos pasos del proceso de afiliación:</p>
+<ol>
+    <li style="font-weight: bold;">
+        Copia de DNI
+    </li>
+    Copia simple del DNI del Titular del comercio.
+    <li style="font-weight: bold;">Licencia de funcionamiento</li>
+    Copia legible de la licencia/ resolución municipal de funcionamiento definitiva o de apertura del local comercial.
+    Para módulos/stands/puestos en galerías comerciales y/o mercados deben adjuntar una nota detallando que la licencia/resolución pertenece a una Galería/Mercado.
+    <li style="font-weight: bold;">Ficha RUC</li>
+    Copia simple debiendo cumplir el Estado del Contribuyente debe ser ACTIVO, Condición del contribuyente debe ser HABIDO.
+    El tipo de contribuyente debe ser Persona Natural con negocio o cualquier tipo de Persona Jurídica. No mayor a 3 meses.
+    <li style="font-weight: bold;">Vigencia de poder (Persona Jurídica)</li>
+    Sólo para persona jurídica, no mayor a 6 meses de antiguedad.
+    <li style="font-weight: bold;">Voucher de depósito</li>
+    Copia simple. Se requiere un saldo mínimo de S/2500 (en una sola operación). La constancia de abono no debe ser mayor a 3 meses.
+</ol>

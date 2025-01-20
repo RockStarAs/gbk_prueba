@@ -1,0 +1,200 @@
+<div class="card-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>¡Sé un agente multibanco Kasnet!</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form
+            [formGroup]="afiliateForm"
+            (ngSubmit)="handleSubmit()"
+            >
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label for="nombres">Nombres</mat-label>
+                <input matInput type="text" formControlName="nombres">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label for="apPaterno">Apellido paterno</mat-label>
+                <input matInput type="text" formControlName="apPaterno">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label for="apMaterno">Apellido materno</mat-label>
+                <input matInput type="text" formControlName="apMaterno">
+            </mat-form-field>
+            <div class="row">
+                <div class="col-8">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label for="usernameEmail">Correo electrónico</mat-label>
+                        <input matInput type="text" formControlName="usernameEmail">
+                    </mat-form-field>
+                </div>
+                <div class="col-1 text-center">
+                    <p>&#64;</p>
+                </div>
+                <div class="col-3">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Proveedor de correo</mat-label>
+                        <mat-select formControlName="emailProvider" id="" (selectionChange)="onChangeProvider($event)">
+                            @for(item of parametrosService.emailProviders; track item.valo){
+                                <mat-option [value]="item.valo">{{item.desc}}</mat-option>
+                            }
+                            @empty{
+                                <p>Sin datos</p>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            @if(afiliateForm.value.emailProvider == '6'){
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label for="proveedorEmail">Especifique su proveedor</mat-label>
+                    <input matInput type="text" formControlName="proveedorEmail">
+                </mat-form-field>
+                <!-- <label for="proveedorEmail">
+                    Especifique su proveedor
+                    <input type="text" formControlName="proveedorEmail">
+                </label> -->
+            }
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label for="telefono">Teléfono</mat-label>
+                <!-- <input matInput type="text" formControlName="telefono"> -->
+                <input matInput type="text" formControlName="telefono">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label for="tieneRuc">¿Cuenta con RUC?</mat-label>
+                <mat-select formControlName="tieneRuc" id="">
+                    <mat-option value="0">No</mat-option>
+                    <mat-option value="1">Sí</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Departamento</mat-label>
+                <mat-select formControlName="idDepartamento" id="" (selectionChange)="onChangeDepartment()">
+                    @for(item of parametrosService.departamentos; track item.id){
+                        <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+                    }
+                    @empty{
+                        <p>Sin datos</p>
+                    }
+                </mat-select>
+            </mat-form-field>
+            @if(afiliateForm.value.idDepartamento){
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Provincia</mat-label>
+                    <mat-select formControlName="idProvincia" id="" (selectionChange)="onChangeProvince()">
+                        @for(item of parametrosService.provincias; track item.id){
+                            <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+                        }
+                        @empty{
+                            <p>Sin datos</p>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            }
+            @if(afiliateForm.value.idProvincia){
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Distrito</mat-label>
+                    <mat-select formControlName="idDistrito" id="">
+                        @for(item of parametrosService.distritos; track item.id){
+                            <mat-option [value]="item.id">{{item.nombre}}</mat-option>
+                        }
+                        @empty{
+                            <p>Sin datos</p>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            }
+            <div class="row mt-3 text-center">
+              <button mat-raised-button color="primary" class="submit-button" type="submit">
+                Registrarse
+              </button>
+            </div>
+      
+            <!-- <label for="tieneRuc">
+                ¿Cuenta con RUC?
+                <select formControlName="tieneRuc" id="">
+                    <option value="0">No</option>
+                    <option value="1">Sí</option>
+                </select>
+            </label> -->
+            
+                        <!-- <label for="usernameEmail">
+                            Correo eléctronico
+                            <input type="text" formControlName="usernameEmail">
+                            &#64;
+                            <select formControlName="emailProvider" id="" (change)="onChangeProvider($event)">
+                                @for(item of parametrosService.emailProviders; track item.valo){
+                                    <option [value]="item.valo">{{item.desc}}</option>
+                                }
+                                @empty{
+                                    <p>Sin datos</p>
+                                }
+                            </select>
+                        </label> -->
+                        <!-- <br> -->
+                        <!-- <label for="telefono">
+                            Teléfono
+                            <input type="text" formControlName="telefono">
+                        </label> -->
+                        <!-- <br> -->
+                        <!-- <label for="tieneRuc">
+                            ¿Cuenta con RUC?
+                            <select formControlName="tieneRuc" id="">
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </label> -->
+                        <!-- <br>
+                        <label for="idDepartamento">
+                            Departamento
+                            <select formControlName="idDepartamento" id="" (change)="onChangeDepartment()">
+                                @for(item of parametrosService.departamentos; track item.id){
+                                    <option [value]="item.id">{{item.nombre}}</option>
+                                }
+                                @empty{
+                                    <p>Sin datos</p>
+                                } -->
+                                <!-- <option value="1">Lambayeque</option>
+                                <option value="2">Lima</option> -->
+                            <!-- </select>
+                        </label> -->
+                        <!-- <br> -->
+                        <!-- @if(afiliateForm.value.idDepartamento){
+                            <label for="idProvincia">
+                                Provincia
+                                <select formControlName="idProvincia" id="" (change)="onChangeProvince()">
+                                    @for(item of parametrosService.provincias; track item.id){
+                                        <option [value]="item.id">{{item.nombre}}</option>
+                                    }
+                                    @empty{
+                                        <p>Sin datos</p>
+                                    }
+                                </select>
+                            </label>
+                        }
+                        <br> -->
+                        <!-- @if(afiliateForm.value.idProvincia){
+                            <label for="idDistrito">
+                                Distrito
+                                <select formControlName="idDistrito" id=""> -->
+                                    <!-- <option value="1">Lambayeque</option>
+                                    <option value="2">Lima</option> -->
+                                    <!-- @for(item of parametrosService.distritos; track item.id){
+                                        <option [value]="item.id">{{item.nombre}}</option>
+                                    }
+                                    @empty{
+                                        <p>Sin datos</p>
+                                    }
+                                </select>
+                            </label>
+                        } -->
+                        <!-- <br>
+                        <button type="submit">Registrarse</button> -->
+                    </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<pre>
+    {{ convertToJson() }}
+</pre>
+

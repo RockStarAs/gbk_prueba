@@ -1,1 +1,1 @@
-# POR FAVOR LEER EL ARCHIVO .pdf que agregué al repo!!!!!!!!!!!!!!!!!!!!
+# POR FAVOR LEER EL ARCHIVO .pdf que agregué al repo
